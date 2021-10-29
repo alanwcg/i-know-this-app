@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "i-know-this-app",
+    "slug": "i-know-this-app",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "i-know-this-app"
+}
