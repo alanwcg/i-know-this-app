@@ -1,6 +1,7 @@
 export default {
   colors: {
     background: "#282a36",
+    placeholder: "rgba(248, 248, 242, 0.5)",
     gray: "#44475a",
     white: "#f8f8f2",
     blue: "#6272a4",
