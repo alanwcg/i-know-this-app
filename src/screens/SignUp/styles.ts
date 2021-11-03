@@ -30,19 +30,32 @@ export const Content = styled.View`
     `};
 `;
 
-export const LogoWrapper = styled.View`
-  width: 100%;
-  height: 200px;
+export const Header = styled.View`
   align-items: center;
   justify-content: center;
   margin-bottom: 24px;
-  background-color: ${({ theme }) => theme.colors.white};
+  position: relative;
 `;
 
-export const LogoPlaceholder = styled.Text`
-  font-size: ${RFValue(16)}px;
+export const BackButton = styled(BorderlessButton)
+  .attrs<BorderlessButtonProps>(({ theme }) => ({
+    activeOpacity: 0.5, // iOS
+    rippleColor: theme.colors.placeholder, // Android
+  }))`
+    position: absolute;
+    top: 0;
+    left: 0;
+  `;
+
+export const ArrowLeft = styled(Feather)`
+  font-size: ${RFValue(36)}px;
+  color: ${({ theme }) => theme.colors.purple};
+`;
+
+export const HeaderTitle = styled.Text`
+  font-size: ${RFValue(24)}px;
   font-family: ${({ theme }) => theme.fonts.bold};
-  color: ${({ theme }) => theme.colors.background};
+  color: ${({ theme }) => theme.colors.purple};
 `;
 
 export const Form = styled.ScrollView.attrs({
@@ -65,31 +78,4 @@ export const Icon = styled(Feather)`
 
 export const ButtonWrapper = styled.View`
   margin-top: 24px;
-`;
-
-export const Footer = styled.View`
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin-top: 24px;
-`;
-
-export const FooterText = styled.Text`
-  font-size: ${RFValue(14)}px;
-  font-family: ${({ theme }) => theme.fonts.medium};
-  color: ${({ theme }) => theme.colors.white};
-  margin-right: 8px;
-`;
-
-export const SignUpButton = styled(BorderlessButton)
-  .attrs<BorderlessButtonProps>(({ theme }) => ({
-    activeOpacity: 0.5, // iOS
-    borderless: false, // Android
-    rippleColor: theme.colors.placeholder,
-  }))``;
-
-export const SignUpButtonText = styled.Text`
-  font-size: ${RFValue(14)}px;
-  font-family: ${({ theme }) => theme.fonts.bold};
-  color: ${({ theme }) => theme.colors.purple};
 `;

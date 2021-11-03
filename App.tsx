@@ -9,7 +9,8 @@ import {
 } from '@expo-google-fonts/fira-code';
 
 import theme from './src/styles/theme';
-import { SignIn } from './src/screens/SignIn';
+import { Routes } from './src/routes';
+import { AuthProvider } from './src/hooks/useAuth';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -24,7 +25,9 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <SignIn />
+      <AuthProvider>
+        <Routes />
+      </AuthProvider>
     </ThemeProvider>
   );
 }
