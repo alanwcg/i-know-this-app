@@ -1,14 +1,16 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-import { Home } from '../screens/Home';
-import { api } from '../services/api';
-import { AxiosError } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AxiosError } from 'axios';
+
+import { api } from '../services/api';
 import { useAuth } from '../hooks/useAuth';
+import { Home } from '../screens/Home';
+import { Technology } from '../screens/Technology';
 
 export type MainStackParamList = {
   Home: undefined;
+  Technology: { tech_id: string } | undefined;
 }
 
 const { Navigator, Screen } = createNativeStackNavigator<MainStackParamList>();
@@ -83,9 +85,11 @@ export function MainRoutes() {
       initialRouteName="Home"
       screenOptions={{
         headerShown: false,
+        animation: 'slide_from_right',
       }}
     >
       <Screen name="Home" component={Home} />
-    </Navigator>
-  );
+      <Screen name="Technology" component={Technology} />
+    </ Navigator>
+      );
 }

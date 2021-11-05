@@ -12,6 +12,7 @@ import { api } from '../services/api';
 import { Alert } from 'react-native';
 
 type User = {
+  id: string;
   name: string;
   email: string;
   avatar_url: string;
@@ -33,7 +34,6 @@ type AuthProviderProps = {
   children: ReactNode;
 }
 
-const userKey = '@IKnowThis:user';
 const tokenKey = '@IKnowThis:token';
 const refreshTokenKey = '@IKnowThis:refresh_token';
 
@@ -57,7 +57,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       await AsyncStorage.multiSet([
-        [userKey, JSON.stringify(user)],
         [tokenKey, JSON.stringify(token)],
         [refreshTokenKey, JSON.stringify(refresh_token)],
       ]);
@@ -70,26 +69,23 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   async function signOut() {
-    await AsyncStorage.multiRemove([
-      userKey,
-      tokenKey,
-      refreshTokenKey,
-    ]);
+    await AsyncStorage.multiRemove([tokenKey, refreshTokenKey]);
 
     setUser(undefined);
   }
 
   useEffect(() => {
     async function loadStorageData() {
-      const [[, user], [, token]] = await AsyncStorage.multiGet([
-        userKey,
-        tokenKey,
-      ]);
+      const token = await AsyncStorage.getItem(tokenKey);
 
-      if (token && user) {
-        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      if (token) {
+        api.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(String(token))}`;
 
-        setUser(JSON.parse(String(user)));
+        const response = await api.get('/users/me');
+
+        console.log(response.data);
+
+        setUser(response.data);
       }
     }
 
