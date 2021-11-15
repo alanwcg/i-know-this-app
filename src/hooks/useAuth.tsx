@@ -83,8 +83,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         const response = await api.get('/users/me');
 
-        console.log(response.data);
-
         setUser(response.data);
       }
     }

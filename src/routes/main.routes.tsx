@@ -10,7 +10,7 @@ import { Technology } from '../screens/Technology';
 
 export type MainStackParamList = {
   Home: undefined;
-  Technology: { tech_id: string } | undefined;
+  Technology: { tech_id: string, tech_name: string };
 }
 
 const { Navigator, Screen } = createNativeStackNavigator<MainStackParamList>();

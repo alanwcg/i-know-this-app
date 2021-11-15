@@ -40,7 +40,7 @@ export const Header = styled.View`
 export const BackButton = styled(BorderlessButton)
   .attrs<BorderlessButtonProps>(({ theme }) => ({
     activeOpacity: 0.5, // iOS
-    rippleColor: theme.colors.placeholder, // Android
+    rippleColor: theme.colors.purple, // Android
   }))`
     position: absolute;
     top: 0;

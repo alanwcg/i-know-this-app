@@ -26,7 +26,7 @@ import {
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<
   MainStackParamList,
-  'Technology'
+  'Home'
 >;
 
 export function Home() {
@@ -104,6 +104,7 @@ export function Home() {
                 key={tech.id}
                 onPress={() => navigation.push('Technology', {
                   tech_id: tech.id,
+                  tech_name: tech.name,
                 })}
               >
                 <TechIcon name="logo-react" />

@@ -2,10 +2,8 @@ import styled, { css } from 'styled-components/native';
 import { Platform, FlatList } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { getBottomSpace, getStatusBarHeight } from 'react-native-iphone-x-helper';
-import { Feather, Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import {
-  BorderlessButton,
-  BorderlessButtonProps,
   RectButton,
   RectButtonProps,
 } from 'react-native-gesture-handler';
@@ -58,6 +56,7 @@ export const TechButton = styled(RectButton).attrs<RectButtonProps>({
   background-color: ${({ theme }) => theme.colors.gray};
 
   padding: 24px;
+  margin-bottom: 16px;
   border-radius: 16px;
   flex-direction: row;
   align-items: center;
