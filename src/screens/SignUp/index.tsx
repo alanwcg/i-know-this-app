@@ -19,13 +19,12 @@ import { AuthStackParamList } from '../../routes/auth.routes';
 import { useAuth } from '../../hooks/useAuth';
 import { Input } from '../../components/Form/Input';
 import { Button } from '../../components/Form/Button';
+import { BackButton } from '../../components/BackButton';
 
 import {
   Container,
   Content,
   Header,
-  BackButton,
-  ArrowLeft,
   HeaderTitle,
   Form,
   InputWrapper,
@@ -105,9 +104,7 @@ export function SignUp() {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Content>
           <Header>
-            <BackButton onPress={() => navigation.goBack()}>
-              <ArrowLeft name="arrow-left" />
-            </BackButton>
+            <BackButton onPress={() => navigation.goBack()} />
 
             <HeaderTitle>Cadastro</HeaderTitle>
           </Header>

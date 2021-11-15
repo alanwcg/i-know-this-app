@@ -7,8 +7,6 @@ import {
   getStatusBarHeight,
 } from 'react-native-iphone-x-helper';
 import {
-  BorderlessButton,
-  BorderlessButtonProps,
   RectButton,
   RectButtonProps,
 } from 'react-native-gesture-handler';
@@ -35,21 +33,6 @@ export const TitleContainer = styled.View`
   padding: 0 24px;
   align-items: center;
   margin-bottom: 24px;
-`;
-
-export const BackButton = styled(BorderlessButton)
-  .attrs<BorderlessButtonProps>(({ theme }) => ({
-    activeOpacity: 0.5, // iOS
-    rippleColor: theme.colors.purple, // Android
-  }))`
-    position: absolute;
-    top: 0;
-    left: 0;
-  `;
-
-export const ArrowLeft = styled(Feather)`
-  font-size: ${RFValue(36)}px;
-  color: ${({ theme }) => theme.colors.purple};
 `;
 
 export const Title = styled.Text`
@@ -96,6 +79,11 @@ export const LevelButton = styled(RectButton).attrs<RectButtonProps>({
   justify-content: center;
   padding: 16px;
   border-radius: 16px;
+
+  /* ${({ enabled }) => !enabled &&
+    css`
+      opacity: 0.7;
+    `}; */
 `;
 
 export const LevelName = styled.Text`
@@ -120,20 +108,6 @@ export const ModulesContainer = styled.View`
   border-bottom-right-radius: 16px;
 `;
 
-export const ModuleButton = styled(RectButton).attrs<RectButtonProps>({
-  activeOpacity: 0.2, // iOS Only
-})`
-  width: 100%;
-  background-color: ${({ theme }) => theme.colors.purple};
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  border-radius: 16px;
+export const ButtonWrapper = styled.View`
   margin-top: 8px;
-`;
-
-export const ModuleName = styled.Text`
-  font-size: ${RFValue(16)}px;
-  font-family: ${({ theme }) => theme.fonts.bold};
-  color: ${({ theme }) => theme.colors.white};
 `;

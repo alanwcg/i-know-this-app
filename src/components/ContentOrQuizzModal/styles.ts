@@ -52,10 +52,6 @@ export const ButtonContainer = styled.View`
   justify-content: space-between;
 `;
 
-export const ButtonWrapper = styled.View`
-  margin-top: 16px;
-`;
-
 export const Button = styled.Pressable.attrs<PressableProps>(({ theme }) => ({
   android_disableSound: true, // Android
 }))`

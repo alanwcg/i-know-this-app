@@ -34,6 +34,7 @@ type AuthProviderProps = {
   children: ReactNode;
 }
 
+const userKey = '@IKnowThis:user';
 const tokenKey = '@IKnowThis:token';
 const refreshTokenKey = '@IKnowThis:refresh_token';
 
@@ -57,6 +58,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       await AsyncStorage.multiSet([
+        [userKey, JSON.stringify(user)],
         [tokenKey, JSON.stringify(token)],
         [refreshTokenKey, JSON.stringify(refresh_token)],
       ]);
@@ -69,22 +71,32 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   async function signOut() {
-    await AsyncStorage.multiRemove([tokenKey, refreshTokenKey]);
+    await AsyncStorage.multiRemove([userKey, tokenKey, refreshTokenKey]);
 
     setUser(undefined);
   }
 
   useEffect(() => {
     async function loadStorageData() {
-      const token = await AsyncStorage.getItem(tokenKey);
+      const [[, user], [, token]] = await AsyncStorage.multiGet([
+        userKey,
+        tokenKey,
+      ]);
 
-      if (token) {
+      if (token && user) {
         api.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(String(token))}`;
 
-        const response = await api.get('/users/me');
-
-        setUser(response.data);
+        setUser(JSON.parse(String(user)));
       }
+      // const token = await AsyncStorage.getItem(tokenKey);
+
+      // if (token) {
+      //   api.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(String(token))}`;
+
+      //   const response = await api.get('/users/me');
+
+      //   setUser(response.data);
+      // }
     }
 
     loadStorageData();

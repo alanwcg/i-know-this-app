@@ -3,14 +3,19 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AxiosError } from 'axios';
 
+import { Module } from '../types/Module';
 import { api } from '../services/api';
 import { useAuth } from '../hooks/useAuth';
 import { Home } from '../screens/Home';
 import { Technology } from '../screens/Technology';
+import { ModuleContent } from '../screens/ModuleContent';
+import { ModuleLinks } from '../screens/ModuleLinks';
 
 export type MainStackParamList = {
   Home: undefined;
   Technology: { tech_id: string, tech_name: string };
+  ModuleContent: { module: Module };
+  ModuleLinks: { module: Module };
 }
 
 const { Navigator, Screen } = createNativeStackNavigator<MainStackParamList>();
@@ -90,6 +95,8 @@ export function MainRoutes() {
     >
       <Screen name="Home" component={Home} />
       <Screen name="Technology" component={Technology} />
+      <Screen name="ModuleContent" component={ModuleContent} />
+      <Screen name="ModuleLinks" component={ModuleLinks} />
     </ Navigator>
       );
 }

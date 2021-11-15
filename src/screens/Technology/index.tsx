@@ -21,12 +21,12 @@ import { Header } from '../../components/Header';
 import { Spinner } from '../../components/Spinner';
 import { EmptyList } from '../../components/EmptyList';
 import { ContentOrQuizzModal } from '../../components/ContentOrQuizzModal';
+import { BackButton } from '../../components/BackButton';
+import { Button } from '../../components/Form/Button';
 
 import {
   Container,
   TitleContainer,
-  BackButton,
-  ArrowLeft,
   Title,
   SpinnerContainer,
   Content,
@@ -35,8 +35,7 @@ import {
   LevelName,
   Icon,
   ModulesContainer,
-  ModuleButton,
-  ModuleName,
+  ButtonWrapper,
 } from './styles';
 
 type TechnologyScreenNavigationProp = NativeStackNavigationProp<
@@ -46,7 +45,12 @@ type TechnologyScreenNavigationProp = NativeStackNavigationProp<
 
 type TechnologyScreenRouteProp = RouteProp<MainStackParamList, 'Technology'>;
 
-let moduleName = '';
+let module: Module = {
+  id: '',
+  name: '',
+  content: '',
+  links: '',
+};
 
 export function Technology() {
   const [levels, setLevels] = useState<Level[]>([]);
@@ -55,11 +59,13 @@ export function Technology() {
       id: '1',
       name: 'Estado',
       content: '',
+      links: '',
     },
     {
       id: '2',
       name: 'Componente',
       content: '',
+      links: '',
     }
   ]));
   const [selectedLevel, setSelectedLevel] = useState('');
@@ -103,8 +109,8 @@ export function Technology() {
     modulesContainerAnimation.value = withTiming(100, { duration: 500 });
   }
 
-  function handleOpenModal(module_name: string) {
-    moduleName = module_name;
+  function handleOpenModal(selectedModule: Module) {
+    module = selectedModule;
     setIsModalOpen(true);
   }
 
@@ -119,10 +125,9 @@ export function Technology() {
     setIsModalOpen(false);
 
     if (filter === 'content') {
-      // navigation.push('Technology', {
-      //   subServiceId: id,
-      //   serviceType,
-      // });
+      navigation.push('ModuleContent', {
+        module,
+      });
       return;
     }
 
@@ -186,8 +191,6 @@ export function Technology() {
   useEffect(() => {
     fetchLevels();
     fetchModules();
-
-    console.log(modules);
   }, []);
 
   return (
@@ -200,9 +203,7 @@ export function Technology() {
       <Header user={user} />
 
       <TitleContainer>
-        <BackButton onPress={() => navigation.goBack()}>
-          <ArrowLeft name="arrow-left" />
-        </BackButton>
+        <BackButton onPress={() => navigation.goBack()} />
 
         <Title>{tech_name}</Title>
       </TitleContainer>
@@ -232,12 +233,12 @@ export function Technology() {
                 <Animated.View style={showModulesStyle}>
                   <ModulesContainer>
                     {modules.map(module => (
-                      <ModuleButton
-                        key={module.id}
-                        onPress={() => handleOpenModal(module.name)}
-                      >
-                        <ModuleName>{module.name}</ModuleName>
-                      </ModuleButton>
+                      <ButtonWrapper key={module.id}>
+                        <Button
+                          title={module.name}
+                          onPress={() => handleOpenModal(module)}
+                        />
+                      </ButtonWrapper>
                     ))}
                   </ModulesContainer>
                 </Animated.View>
@@ -262,7 +263,7 @@ export function Technology() {
         animationType="fade"
       >
         <ContentOrQuizzModal
-          moduleName={moduleName}
+          moduleName={module.name}
           closeModal={handleCloseModal}
           handleChoice={handleUserFilterChoice}
         />
