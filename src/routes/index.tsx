@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import { AuthRoutes } from './auth.routes';
 import { useAuth } from '../hooks/useAuth';
-import { MainRoutes } from './main.routes';
+import { DrawerRoutes } from './drawer.routes';
 
 export function Routes() {
   const { isAuthenticated } = useAuth();
@@ -11,7 +11,7 @@ export function Routes() {
   return (
     <NavigationContainer>
       {isAuthenticated ? (
-        <MainRoutes />
+        <DrawerRoutes />
       ) : (
         <AuthRoutes />
       )}

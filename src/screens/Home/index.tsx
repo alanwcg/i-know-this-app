@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { StatusBar, RefreshControl, Alert } from 'react-native';
 import { useTheme } from 'styled-components';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 import axios from 'axios';
 
-import { api } from '../../services/api';
-import { useAuth } from '../../hooks/useAuth';
 import { MainStackParamList } from '../../routes/main.routes';
+import { DrawerParamList } from '../../routes/drawer.routes';
+import { api } from '../../services/api';
 import { Technology } from '../../types/Technology';
 import { EmptyList } from '../../components/EmptyList';
 import { Header } from '../../components/Header';
@@ -24,9 +25,14 @@ import {
   TechName,
 } from './styles';
 
-type HomeScreenNavigationProp = NativeStackNavigationProp<
-  MainStackParamList,
-  'Home'
+// type HomeScreenNavigationProp = NativeStackNavigationProp<
+//   MainStackParamList,
+//   'Home'
+// >;
+
+type HomeScreenNavigationProp = CompositeNavigationProp<
+  NativeStackNavigationProp<MainStackParamList, 'Home'>,
+  DrawerNavigationProp<DrawerParamList>
 >;
 
 export function Home() {
@@ -35,8 +41,11 @@ export function Home() {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const theme = useTheme();
-  const { user } = useAuth();
   const navigation = useNavigation<HomeScreenNavigationProp>();
+
+  const openDrawer = useCallback(() => {
+    navigation.openDrawer();
+  }, []);
 
   async function fetchTechnologies() {
     try {
@@ -85,7 +94,7 @@ export function Home() {
         backgroundColor={theme.colors.background}
       />
 
-      <Header user={user} />
+      <Header openDrawer={openDrawer} />
 
       <Content>
         <Title>Tecnologias</Title>

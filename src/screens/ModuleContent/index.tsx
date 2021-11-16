@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
 import { useTheme } from 'styled-components';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import {
+  useNavigation,
+  useRoute,
+  RouteProp,
+  CompositeNavigationProp,
+} from '@react-navigation/native';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 import Markdown from 'react-native-markdown-display';
 import theme from '../../styles/theme';
 
 import { MainStackParamList } from '../../routes/main.routes';
-import { useAuth } from '../../hooks/useAuth';
+import { DrawerParamList } from '../../routes/drawer.routes';
 import { Header } from '../../components/Header';
 import { BackButton } from '../../components/BackButton';
 
@@ -22,9 +28,9 @@ import {
   ButtonText,
 } from './styles';
 
-type ModuleContentScreenNavigationProp = NativeStackNavigationProp<
-  MainStackParamList,
-  'ModuleContent'
+type ModuleContentScreenNavigationProp = CompositeNavigationProp<
+  NativeStackNavigationProp<MainStackParamList, 'ModuleContent'>,
+  DrawerNavigationProp<DrawerParamList>
 >;
 
 type ModuleContentScreenRouteProp = RouteProp<MainStackParamList, 'ModuleContent'>;
@@ -36,7 +42,10 @@ export function ModuleContent() {
   const theme = useTheme();
   const navigation = useNavigation<ModuleContentScreenNavigationProp>();
   const { params: { module } } = useRoute<ModuleContentScreenRouteProp>();
-  const { user } = useAuth();
+
+  const openDrawer = useCallback(() => {
+    navigation.openDrawer();
+  }, []);
 
   function onLinkPress(url: string) {
     // if (url) {
@@ -62,7 +71,7 @@ export function ModuleContent() {
         backgroundColor={theme.colors.background}
       />
 
-      <Header user={user} />
+      <Header openDrawer={openDrawer} />
 
       <TitleContainer>
         <BackButton onPress={() => navigation.goBack()} />

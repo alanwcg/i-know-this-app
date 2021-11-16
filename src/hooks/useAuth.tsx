@@ -26,6 +26,7 @@ type SignInCredentials = {
 type AuthContextData = {
   user: User | undefined;
   isAuthenticated: boolean;
+  updateUser: (data: User) => void;
   signIn: (credentials: SignInCredentials) => Promise<void>;
   signOut: () => Promise<void>;
 }
@@ -43,6 +44,10 @@ const AuthContext = createContext({} as AuthContextData);
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>();
   const isAuthenticated = !!user;
+
+  function updateUser(data: User) {
+    setUser(data);
+  }
 
   async function signIn({ email, password }: SignInCredentials) {
     try {
@@ -103,7 +108,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, updateUser, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );

@@ -51,5 +51,12 @@
 	<false/>
   <key>UIStatusBarStyle</key>
   <string>UIStatusBarStyleDefault</string>
+
+  <key>NSPhotoLibraryUsageDescription</key>
+  <string>Give IKnowThisApp permission to save photos</string>
+  <key>NSCameraUsageDescription</key>
+  <string>Give IKnowThisApp permission to access your camera</string>
+  <key>NSMicrophoneUsageDescription</key>
+  <string>Give IKnowThisApp permission to use your microphone</string>
 </dict>
 </plist>

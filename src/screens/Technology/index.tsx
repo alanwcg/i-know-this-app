@@ -2,7 +2,13 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Alert, RefreshControl, StatusBar, Modal } from 'react-native';
 import { useTheme } from 'styled-components';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import {
+  useNavigation,
+  useRoute,
+  RouteProp,
+  CompositeNavigationProp,
+} from '@react-navigation/native';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 import axios from 'axios';
 import Animated, {
   Extrapolate,
@@ -12,11 +18,11 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
+import { MainStackParamList } from '../../routes/main.routes';
+import { DrawerParamList } from '../../routes/drawer.routes';
 import { Level } from '../../types/Level';
 import { Module } from '../../types/Module';
-import { MainStackParamList } from '../../routes/main.routes';
 import { api } from '../../services/api';
-import { useAuth } from '../../hooks/useAuth';
 import { Header } from '../../components/Header';
 import { Spinner } from '../../components/Spinner';
 import { EmptyList } from '../../components/EmptyList';
@@ -38,9 +44,9 @@ import {
   ButtonWrapper,
 } from './styles';
 
-type TechnologyScreenNavigationProp = NativeStackNavigationProp<
-  MainStackParamList,
-  'Technology'
+type TechnologyScreenNavigationProp = CompositeNavigationProp<
+  NativeStackNavigationProp<MainStackParamList, 'Technology'>,
+  DrawerNavigationProp<DrawerParamList>
 >;
 
 type TechnologyScreenRouteProp = RouteProp<MainStackParamList, 'Technology'>;
@@ -77,7 +83,6 @@ export function Technology() {
   const theme = useTheme();
   const navigation = useNavigation<TechnologyScreenNavigationProp>();
   const { params: { tech_id, tech_name } } = useRoute<TechnologyScreenRouteProp>();
-  const { user } = useAuth();
 
   const showModulesStyle = useAnimatedStyle(() => {
     return {
@@ -96,6 +101,10 @@ export function Technology() {
       ],
     };
   });
+
+  const openDrawer = useCallback(() => {
+    navigation.openDrawer();
+  }, []);
 
   function onLevelPress(level_id: string) {
     modulesContainerAnimation.value = 0;
@@ -200,7 +209,7 @@ export function Technology() {
         backgroundColor={theme.colors.background}
       />
 
-      <Header user={user} />
+      <Header openDrawer={openDrawer} />
 
       <TitleContainer>
         <BackButton onPress={() => navigation.goBack()} />

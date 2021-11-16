@@ -14,11 +14,11 @@ import {
 } from './styles';
 
 type HeaderProps = {
-  user: User | undefined;
+  openDrawer: () => void;
 }
 
-export function Header({ user }: HeaderProps) {
-  const { signOut } = useAuth();
+export function Header({ openDrawer }: HeaderProps) {
+  const { user } = useAuth();
 
   return (
     <Container>
@@ -26,7 +26,7 @@ export function Header({ user }: HeaderProps) {
         source={{
           uri: user && user.avatar_url
             ? user.avatar_url
-            : `https://ui-avatars.com/api/?name=AlanCintra&background=bd93f9`
+            : `https://ui-avatars.com/api/?name=${user ? user.name : 'Usuário'}&background=bd93f9`
         }}
       />
 
@@ -35,7 +35,7 @@ export function Header({ user }: HeaderProps) {
         <UserName>{user ? user.name : 'Usuário'}</UserName>
       </GreetingsContainer>
 
-      <MenuButton onPress={signOut}>
+      <MenuButton onPress={openDrawer}>
         <MenuIcon name="menu" />
       </MenuButton>
     </Container>

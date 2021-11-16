@@ -15,6 +15,7 @@ interface InputProps extends TextInputProps {
   name: string;
   control: Control;
   error: string;
+  defaultValue?: string;
   isPassword?: boolean;
   icon?: React.FC<SvgProps>;
 }
@@ -23,7 +24,8 @@ export function Input({
   name,
   control,
   error,
-  isPassword,
+  defaultValue = '',
+  isPassword = false,
   icon: Icon,
   ...rest
 }: InputProps) {
@@ -38,6 +40,7 @@ export function Input({
         <Controller
           name={name}
           control={control}
+          defaultValue={defaultValue}
           render={({ field: { ref, onChange, onBlur, value }}) => (
             <TextInput
               ref={ref}
