@@ -11,6 +11,7 @@ import {
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import Markdown from 'react-native-markdown-display';
 import theme from '../../styles/theme';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 import { MainStackParamList } from '../../routes/main.routes';
 import { DrawerParamList } from '../../routes/drawer.routes';
@@ -34,9 +35,6 @@ type ModuleLinksScreenNavigationProp = CompositeNavigationProp<
 
 type ModuleLinksScreenRouteProp = RouteProp<MainStackParamList, 'ModuleLinks'>;
 
-const copy = `[This is a link!](https://github.com/iamacup/react-native-markdown-display/)
-[Youtube](https://www.youtube.com/watch?v=NgrGzVGjq0U)`;
-
 export function ModuleLinks() {
   const theme = useTheme();
   const navigation = useNavigation<ModuleLinksScreenNavigationProp>();
@@ -57,6 +55,12 @@ export function ModuleLinks() {
     return true;
   }
 
+  function handleModuleQuizz() {
+    navigation.push('ModuleQuizz', {
+      module,
+    });
+  }
+
   return (
     <Container>
       <StatusBar
@@ -74,20 +78,27 @@ export function ModuleLinks() {
 
       <Content>
         <Scroll>
-          <Markdown style={styles} onLinkPress={onLinkPress}>{copy}</Markdown>
+          <Markdown style={styles} onLinkPress={onLinkPress}>{module.links}</Markdown>
         </Scroll>
 
         <ButtonWrapper>
-          <Button title="Quizz" onPress={() => console.log('TODO')} />
+          <Button title="Quizz" onPress={handleModuleQuizz} />
         </ButtonWrapper>
       </Content>
     </Container>
   );
 }
 
-//TODO: Estilizar o text em markdown que vem dentro de module.content
 const styles = StyleSheet.create({
+  body: {
+    color: theme.colors.white,
+    fontFamily: theme.fonts.medium,
+    fontSize: RFValue(16),
+  },
   heading1: {
     color: theme.colors.white,
-  }
+  },
+  link: {
+    color: theme.colors.orange,
+  },
 });

@@ -11,6 +11,8 @@ import {
 import theme from './src/styles/theme';
 import { Routes } from './src/routes';
 import { AuthProvider } from './src/hooks/useAuth';
+import { ModalProvider } from './src/hooks/useModal';
+import { Modal } from './src/components/Modal';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -25,9 +27,13 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <AuthProvider>
-        <Routes />
-      </AuthProvider>
+      <ModalProvider>
+        <AuthProvider>
+          <Routes />
+
+          <Modal />
+        </AuthProvider>
+      </ModalProvider>
     </ThemeProvider>
   );
 }

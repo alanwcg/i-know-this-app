@@ -18,12 +18,14 @@ export const Container = styled.View`
     `};
 `;
 
-// export const LogoWrapper = styled.View`
-//   align-items: center;
-//   padding-bottom: 8px;
-//   border-bottom-width: 1px;
-//   border-bottom-color: ${({ theme }) => theme.colors['gray.200']};
-// `;
+export const LogoWrapper = styled.View`
+  align-items: center;
+
+  ${Platform.OS === 'android'
+    && css`
+      margin-bottom: 36px;
+    `};
+`;
 
 export const DrawerItem = styled(ReactNavigationDrawerItem).attrs(({ theme }) => ({
   labelStyle: {

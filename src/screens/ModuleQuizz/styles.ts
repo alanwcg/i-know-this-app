@@ -1,20 +1,15 @@
 import styled, { css } from 'styled-components/native';
 import { Platform } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { Feather } from '@expo/vector-icons';
 import {
   getBottomSpace,
   getStatusBarHeight,
 } from 'react-native-iphone-x-helper';
 
-export const Container = styled.KeyboardAvoidingView.attrs({
-  keyboardVerticalOffset: -16, // iOS
-})`
+export const Container = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.background};
-`;
 
-export const Content = styled.View`
   flex: 1;
 
   ${Platform.OS === 'ios'
@@ -26,20 +21,30 @@ export const Content = styled.View`
     `};
 `;
 
-export const Header = styled.View`
+export const TitleContainer = styled.View`
+  width: 100%;
+  padding: 0 24px;
   align-items: center;
-  justify-content: center;
   margin-bottom: 24px;
-  position: relative;
 `;
 
-export const HeaderTitle = styled.Text`
+export const Title = styled.Text`
   font-size: ${RFValue(24)}px;
   font-family: ${({ theme }) => theme.fonts.bold};
   color: ${({ theme }) => theme.colors.purple};
 `;
 
-export const Form = styled.ScrollView.attrs({
+export const Content = styled.View`
+  flex: 1;
+`;
+
+export const SpinnerContainer = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const Scroll = styled.ScrollView.attrs({
   contentContainerStyle: {
     flexGrow: 1,
     justifyContent: 'center',
@@ -47,16 +52,21 @@ export const Form = styled.ScrollView.attrs({
   showsVerticalScrollIndicator: false,
 })``;
 
-export const InputWrapper = styled.View`
-  margin-bottom: 16px;
+export const Question = styled.Text`
+  font-size: ${RFValue(16)}px;
+  font-family: ${({ theme }) => theme.fonts.bold};
+  color: ${({ theme }) => theme.colors.white};
+  text-align: justify;
+  margin-bottom: 24px;
 `;
 
-export const Icon = styled(Feather)`
-  font-size: ${RFValue(24)}px;
-  color: ${({ theme }) => theme.colors.purple};
-  margin-left: 16px;
+export const ButtonContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
 `;
 
 export const ButtonWrapper = styled.View`
-  margin-top: 8px;
+  width: 47%;
 `;

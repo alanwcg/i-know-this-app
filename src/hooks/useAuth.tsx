@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 import { api } from '../services/api';
-import { Alert } from 'react-native';
+import { useModal } from './useModal';
 
 type User = {
   id: string;
@@ -45,6 +45,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>();
   const isAuthenticated = !!user;
 
+  const { openModal } = useModal();
+
   function updateUser(data: User) {
     setUser(data);
   }
@@ -70,7 +72,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     } catch (error) {
       console.log(error);
       if (axios.isAxiosError(error)) {
-        Alert.alert(error.response?.data.message);
+        openModal({
+          message: error.response?.data.message,
+          type: 'error',
+        });
       }
     }
   }

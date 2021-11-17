@@ -32,17 +32,8 @@ export const Content = styled.View`
 
 export const LogoWrapper = styled.View`
   width: 100%;
-  height: 200px;
   align-items: center;
   justify-content: center;
-  margin-bottom: 24px;
-  background-color: ${({ theme }) => theme.colors.white};
-`;
-
-export const LogoPlaceholder = styled.Text`
-  font-size: ${RFValue(16)}px;
-  font-family: ${({ theme }) => theme.fonts.bold};
-  color: ${({ theme }) => theme.colors.background};
 `;
 
 export const Form = styled.ScrollView.attrs({
@@ -64,7 +55,22 @@ export const Icon = styled(Feather)`
 `;
 
 export const ButtonWrapper = styled.View`
-  margin-top: 24px;
+  margin-top: 8px;
+`;
+
+export const ForgotPasswordButton = styled(BorderlessButton)
+  .attrs<BorderlessButtonProps>(({ theme }) => ({
+    activeOpacity: 0.5, // iOS
+    borderless: false, // Android
+    rippleColor: theme.colors.placeholder,
+  }))`
+    margin: 16px auto;
+  `;
+
+export const ForgotPasswordButtonText = styled.Text`
+  font-size: ${RFValue(14)}px;
+  font-family: ${({ theme }) => theme.fonts.medium};
+  color: ${({ theme }) => theme.colors.white};
 `;
 
 export const Footer = styled.View`
@@ -85,7 +91,7 @@ export const SignUpButton = styled(BorderlessButton)
   .attrs<BorderlessButtonProps>(({ theme }) => ({
     activeOpacity: 0.5, // iOS
     borderless: false, // Android
-    rippleColor: theme.colors.placeholder,
+    rippleColor: theme.colors.purple,
   }))``;
 
 export const SignUpButtonText = styled.Text`

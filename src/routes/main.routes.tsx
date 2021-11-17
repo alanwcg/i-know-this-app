@@ -10,12 +10,14 @@ import { Home } from '../screens/Home';
 import { Technology } from '../screens/Technology';
 import { ModuleContent } from '../screens/ModuleContent';
 import { ModuleLinks } from '../screens/ModuleLinks';
+import { ModuleQuizz } from '../screens/ModuleQuizz';
 
 export type MainStackParamList = {
   Home: undefined;
   Technology: { tech_id: string, tech_name: string };
   ModuleContent: { module: Module };
   ModuleLinks: { module: Module };
+  ModuleQuizz: { module: Module };
 }
 
 const { Navigator, Screen } = createNativeStackNavigator<MainStackParamList>();
@@ -97,6 +99,7 @@ export function MainRoutes() {
       <Screen name="Technology" component={Technology} />
       <Screen name="ModuleContent" component={ModuleContent} />
       <Screen name="ModuleLinks" component={ModuleLinks} />
+      <Screen name="ModuleQuizz" component={ModuleQuizz} />
     </ Navigator>
       );
 }

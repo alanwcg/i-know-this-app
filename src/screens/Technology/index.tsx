@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Alert, RefreshControl, StatusBar, Modal } from 'react-native';
+import { RefreshControl, StatusBar, Modal } from 'react-native';
 import { useTheme } from 'styled-components';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import {
@@ -18,11 +18,14 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import { MainStackParamList } from '../../routes/main.routes';
-import { DrawerParamList } from '../../routes/drawer.routes';
+import { Technology as TechnologyType } from '../../types/Technology';
 import { Level } from '../../types/Level';
 import { Module } from '../../types/Module';
+import { MainStackParamList } from '../../routes/main.routes';
+import { DrawerParamList } from '../../routes/drawer.routes';
 import { api } from '../../services/api';
+import { useModal } from '../../hooks/useModal';
+import { useAuth } from '../../hooks/useAuth';
 import { Header } from '../../components/Header';
 import { Spinner } from '../../components/Spinner';
 import { EmptyList } from '../../components/EmptyList';
@@ -56,33 +59,26 @@ let module: Module = {
   name: '',
   content: '',
   links: '',
+  level_id: '',
+  technology_id: '',
+  technology: {} as TechnologyType,
+  userModules: [],
 };
 
 export function Technology() {
   const [levels, setLevels] = useState<Level[]>([]);
-  const [modules, setModules] = useState<Module[]>(() => ([
-    {
-      id: '1',
-      name: 'Estado',
-      content: '',
-      links: '',
-    },
-    {
-      id: '2',
-      name: 'Componente',
-      content: '',
-      links: '',
-    }
-  ]));
+  const [modules, setModules] = useState<Module[]>([]);
   const [selectedLevel, setSelectedLevel] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modulesContainerAnimation = useSharedValue(0);
 
-  const theme = useTheme();
   const navigation = useNavigation<TechnologyScreenNavigationProp>();
   const { params: { tech_id, tech_name } } = useRoute<TechnologyScreenRouteProp>();
+  const theme = useTheme();
+  const { openModal } = useModal();
+  const { user } = useAuth();
 
   const showModulesStyle = useAnimatedStyle(() => {
     return {
@@ -119,7 +115,15 @@ export function Technology() {
   }
 
   function handleOpenModal(selectedModule: Module) {
-    module = selectedModule;
+    const userModule = selectedModule.userModules.find(
+      item => item.user_id === user?.id && item.module_id === selectedModule.id
+    );
+      
+    module = {
+      ...selectedModule,
+      userModules: [userModule!],
+    };
+
     setIsModalOpen(true);
   }
 
@@ -128,9 +132,6 @@ export function Technology() {
   }, []);
 
   const handleUserFilterChoice = useCallback((filter: string) => {
-    //TODO: mandar filtro para a próxima tela
-    console.log(filter);
-    
     setIsModalOpen(false);
 
     if (filter === 'content') {
@@ -141,65 +142,71 @@ export function Technology() {
     }
 
     if (filter === 'quizz') {
-      // navigation.push('Technology', {
-      //   subServiceId: id,
-      //   serviceType,
-      // });
+      navigation.push('ModuleQuizz', {
+        module,
+      });
       return;
     }
   }, []);
 
-  async function fetchLevels() {
+  async function fetchLevelsAndModules() {
     try {
       setIsLoading(true);
 
       const response = await api.get('/levels');
 
+      const res = await api.get('/modules', {
+        params: {
+          technology_id: tech_id,
+        }
+      });
+
       setLevels(response.data);
+      setModules(res.data);
+
       setIsLoading(false);
     } catch (error) {
       console.log(error);
       if (axios.isAxiosError(error)) {
-        Alert.alert(error.response?.data.message);
+        openModal({
+          message: error.response?.data.message,
+          type: 'error',
+        });
       }
       setIsLoading(false);
     }
   }
 
-  async function refetchLevels() {
+  async function refetchLevelsAndModules() {
     try {
       setIsRefreshing(true);
 
       const response = await api.get('/levels');
 
+      const res = await api.get('/modules', {
+        params: {
+          technology_id: tech_id,
+        }
+      });
+
       setLevels(response.data);
+      setModules(res.data);
+
       setIsRefreshing(false);
     } catch (error) {
       console.log(error);
       if (axios.isAxiosError(error)) {
-        Alert.alert(error.response?.data.message);
+        openModal({
+          message: error.response?.data.message,
+          type: 'error',
+        });
       }
       setIsRefreshing(false);
-    }
-  }
-
-  async function fetchModules() {
-    try {
-      const response = await api.get('/modules');
-
-      // console.log(response.data);
-    } catch (error) {
-      console.log(error);
-      if (axios.isAxiosError(error)) {
-        Alert.alert(error.response?.data.message);
-      }
-      setIsLoading(false);
     }
   }
 
   useEffect(() => {
-    fetchLevels();
-    fetchModules();
+    fetchLevelsAndModules();
   }, []);
 
   return (
@@ -241,14 +248,19 @@ export function Technology() {
               {selectedLevel === level.id && (
                 <Animated.View style={showModulesStyle}>
                   <ModulesContainer>
-                    {modules.map(module => (
-                      <ButtonWrapper key={module.id}>
-                        <Button
-                          title={module.name}
-                          onPress={() => handleOpenModal(module)}
-                        />
-                      </ButtonWrapper>
-                    ))}
+                    {modules.map(module => {
+                      if (module.level_id === level.id) {
+                        return (
+                          <ButtonWrapper key={module.id}>
+                            <Button
+                              title={module.name}
+                              onPress={() => handleOpenModal(module)}
+                            />
+                          </ButtonWrapper>
+                        )
+                      }
+
+                    })}
                   </ModulesContainer>
                 </Animated.View>
               )}
@@ -256,7 +268,7 @@ export function Technology() {
           )}
           refreshControl={
             <RefreshControl
-              onRefresh={refetchLevels}
+              onRefresh={refetchLevelsAndModules}
               refreshing={isRefreshing}
               colors={[theme.colors.purple]} // Android ONLY
               tintColor={theme.colors.white} // iOS ONLY
@@ -272,7 +284,7 @@ export function Technology() {
         animationType="fade"
       >
         <ContentOrQuizzModal
-          moduleName={module.name}
+          module={module}
           closeModal={handleCloseModal}
           handleChoice={handleUserFilterChoice}
         />

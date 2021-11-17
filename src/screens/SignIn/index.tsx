@@ -11,6 +11,9 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
+import { RFValue } from 'react-native-responsive-fontsize';
+
+import LogoSvg from '../../../assets/logo.svg';
 
 import { AuthStackParamList } from '../../routes/auth.routes';
 import { useAuth } from '../../hooks/useAuth';
@@ -21,11 +24,12 @@ import {
   Container,
   Content,
   LogoWrapper,
-  LogoPlaceholder, // Trocar pela Logo
   Form,
   InputWrapper,
   Icon,
   ButtonWrapper,
+  ForgotPasswordButton,
+  ForgotPasswordButtonText,
   Footer,
   FooterText,
   SignUpButton,
@@ -77,7 +81,7 @@ export function SignIn() {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Content>
           <LogoWrapper>
-            <LogoPlaceholder>Placeholder</LogoPlaceholder>
+            <LogoSvg width={RFValue(250)} height={RFValue(140)} />
           </LogoWrapper>
 
           <Form>
@@ -116,6 +120,10 @@ export function SignIn() {
                 loading={isSubmitting}
               />
             </ButtonWrapper>
+
+            <ForgotPasswordButton onPress={() => navigation.push('ForgotPassword')}>
+              <ForgotPasswordButtonText>Esqueci minha senha</ForgotPasswordButtonText>
+            </ForgotPasswordButton>
           </Form>
 
           <Footer>

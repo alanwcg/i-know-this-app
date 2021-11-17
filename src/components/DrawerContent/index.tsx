@@ -7,14 +7,14 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
-// import LogoSvg from '../../assets/clinic.svg';
+import LogoSvg from '../../../assets/logo.svg';
 
 import { useAuth } from '../../hooks/useAuth';
 import { DrawerParamList } from '../../routes/drawer.routes';
 
 import {
   Container,
-  // LogoWrapper,
+  LogoWrapper,
   DrawerItem,
   Icon,
 } from './styles';
@@ -27,9 +27,9 @@ export function DrawerContent({ ...rest }: DrawerContentComponentProps) {
 
   return (
     <Container>
-      {/* <LogoWrapper>
+      <LogoWrapper>
         <LogoSvg width={RFValue(150)} height={RFValue(80)} />
-      </LogoWrapper> */}
+      </LogoWrapper>
 
       <DrawerContentScrollView {...rest}>
         <DrawerItem

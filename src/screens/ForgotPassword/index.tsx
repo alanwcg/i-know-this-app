@@ -13,9 +13,8 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 
-import { api } from '../../services/api';
 import { AuthStackParamList } from '../../routes/auth.routes';
-import { useAuth } from '../../hooks/useAuth';
+import { api } from '../../services/api';
 import { useModal } from '../../hooks/useModal';
 import { Input } from '../../components/Form/Input';
 import { Button } from '../../components/Form/Button';
@@ -32,61 +31,50 @@ import {
   ButtonWrapper,
 } from './styles';
 
-type SignUpScreenNavigationProp = NativeStackNavigationProp<
+type ForgotPasswordScreenNavigationProp = NativeStackNavigationProp<
   AuthStackParamList,
-  'SignUp'
+  'ForgotPassword'
 >;
 
-type SignUpFormData = {
+type ForgotPasswordFormData = {
   name: string;
   email: string;
   password: string;
   password_confirmation: string;
 }
 
-const signUpFormDataSchema = yup.object().shape({
-  name: yup.string().required('Nome obrigatório'),
+const forgotPasswordFormDataSchema = yup.object().shape({
   email: yup.string()
     .required('E-mail obrigatório')
     .email('E-mail inválido'),
-  password: yup.string()
-    .required('Senha obrigatória')
-    .min(6, 'Senha precisa ter no mínimo 6 caracteres'),
-  password_confirmation: yup.string()
-    .required('As senhas precisam ser iguais')
-    .oneOf([
-      null,
-      yup.ref('password')
-  ], 'As senhas precisam ser iguais'),
 });
 
-export function SignUp() {
+export function ForgotPassword() {
   const theme = useTheme();
   const {
     control,
     handleSubmit,
-    setFocus,
     formState: { errors, isSubmitting },
   } = useForm({
-    resolver: yupResolver(signUpFormDataSchema),
+    resolver: yupResolver(forgotPasswordFormDataSchema),
   });
-  const navigation = useNavigation<SignUpScreenNavigationProp>();
-  const { signIn } = useAuth();
+  const navigation = useNavigation<ForgotPasswordScreenNavigationProp>();
   const { openModal } = useModal();
 
-  const handleSignUp: SubmitHandler<SignUpFormData> = async data => {
+  const handleSignUp: SubmitHandler<ForgotPasswordFormData> = async data => {
     try {
-      const { name, email, password } = data;
+      const { email } = data;
 
-      await api.post('/users', {
-        name,
+      await api.post('/password/forgot', {
         email,
-        password,
+      });
+
+      openModal({
+        message: 'E-mail enviado. Verifique sua caixa de entrada e siga as instruções para resetar sua senha.',
+        type: 'info',
       });
 
       navigation.goBack();
-
-      await signIn({ email, password });
     } catch (error) {
       console.log(error);
       if(axios.isAxiosError(error)) {
@@ -110,24 +98,10 @@ export function SignUp() {
           <Header>
             <BackButton onPress={() => navigation.goBack()} />
 
-            <HeaderTitle>Cadastro</HeaderTitle>
+            <HeaderTitle>Resetar Senha</HeaderTitle>
           </Header>
 
           <Form>
-            <InputWrapper>
-              <Input
-                name="name"
-                control={control}
-                placeholder="Nome"
-                autoCapitalize="words"
-                autoCorrect={false}
-                error={errors.name && errors.name.message}
-                icon={() => <Icon name="user" />}
-                returnKeyType="next"
-                onSubmitEditing={() => setFocus('email')}
-              />
-            </InputWrapper>
-
             <InputWrapper>
               <Input
                 name="email"
@@ -138,35 +112,6 @@ export function SignUp() {
                 autoCorrect={false}
                 error={errors.email && errors.email.message}
                 icon={() => <Icon name="mail" />}
-                returnKeyType="next"
-                onSubmitEditing={() => setFocus('password')}
-              />
-            </InputWrapper>
-
-            <InputWrapper>
-              <Input
-                name="password"
-                control={control}
-                placeholder="Senha"
-                isPassword
-                error={errors.password && errors.password.message}
-                icon={() => <Icon name="lock" />}
-                returnKeyType="next"
-                onSubmitEditing={() => setFocus('password_confirmation')}
-              />
-            </InputWrapper>
-
-            <InputWrapper>
-              <Input
-                name="password_confirmation"
-                control={control}
-                placeholder="Repita a Senha"
-                isPassword
-                error={
-                  errors.password_confirmation &&
-                  errors.password_confirmation.message
-                }
-                icon={() => <Icon name="lock" />}
                 returnKeyType="send"
                 onSubmitEditing={handleSubmit(handleSignUp)}
               />
@@ -174,7 +119,7 @@ export function SignUp() {
 
             <ButtonWrapper>
               <Button
-                title="Cadastrar"
+                title="Resetar"
                 onPress={handleSubmit(handleSignUp)}
                 loading={isSubmitting}
               />

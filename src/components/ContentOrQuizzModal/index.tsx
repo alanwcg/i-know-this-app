@@ -3,25 +3,30 @@ import { StatusBar } from 'react-native';
 import { shade } from 'polished';
 import { useTheme } from 'styled-components';
 
+import { Module } from '../../types/Module';
+
 import {
   Container,
   Content,
   CloseButton,
   CloseIcon,
   Text,
+  ProgressionBar,
+  UserProgressionBar,
+  Progression,
   ButtonContainer,
   Button,
   ButtonText,
 } from './styles';
 
 type ContentOrQuizzModalProps = {
-  moduleName: string;
+  module: Module;
   closeModal: () => void;
   handleChoice: (filter: string) => void;
 }
 
 export function ContentOrQuizzModal({
-  moduleName,
+  module,
   closeModal,
   handleChoice,
 }: ContentOrQuizzModalProps) {
@@ -33,7 +38,7 @@ export function ContentOrQuizzModal({
         barStyle="light-content"
         backgroundColor="rgba(0, 0, 0, 0.95)"
       />
-      
+
       <Content>
         <CloseButton
           style={({ pressed }) => ({
@@ -44,7 +49,24 @@ export function ContentOrQuizzModal({
           <CloseIcon name="close" />
         </CloseButton>
 
-        <Text>{moduleName}</Text>
+        <Text>{module.name}</Text>
+
+        {module.userModules[0] ? (
+          <ProgressionBar>
+            <UserProgressionBar width={module.userModules[0].progression * 20} />
+
+            <Progression>{`${module.userModules[0].progression * 20}%`}</Progression>
+
+          </ProgressionBar>
+        ) : (
+          <ProgressionBar>
+            <UserProgressionBar width={0} />
+
+            <Progression>0%</Progression>
+
+          </ProgressionBar>
+        )}
+
 
         <ButtonContainer>
           <Button

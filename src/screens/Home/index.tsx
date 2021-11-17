@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { StatusBar, RefreshControl, Alert } from 'react-native';
+import { StatusBar, RefreshControl } from 'react-native';
 import { useTheme } from 'styled-components';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
@@ -9,6 +9,7 @@ import axios from 'axios';
 import { MainStackParamList } from '../../routes/main.routes';
 import { DrawerParamList } from '../../routes/drawer.routes';
 import { api } from '../../services/api';
+import { useModal } from '../../hooks/useModal';
 import { Technology } from '../../types/Technology';
 import { EmptyList } from '../../components/EmptyList';
 import { Header } from '../../components/Header';
@@ -25,11 +26,6 @@ import {
   TechName,
 } from './styles';
 
-// type HomeScreenNavigationProp = NativeStackNavigationProp<
-//   MainStackParamList,
-//   'Home'
-// >;
-
 type HomeScreenNavigationProp = CompositeNavigationProp<
   NativeStackNavigationProp<MainStackParamList, 'Home'>,
   DrawerNavigationProp<DrawerParamList>
@@ -40,8 +36,9 @@ export function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const theme = useTheme();
   const navigation = useNavigation<HomeScreenNavigationProp>();
+  const theme = useTheme();
+  const { openModal } = useModal();
 
   const openDrawer = useCallback(() => {
     navigation.openDrawer();
@@ -59,7 +56,10 @@ export function Home() {
     } catch (error) {
       console.log(error);
       if (axios.isAxiosError(error)) {
-        Alert.alert(error.response?.data.message);
+        openModal({
+          message: error.response?.data.message,
+          type: 'error',
+        });
       }
       setIsLoading(false);
     }
@@ -77,7 +77,10 @@ export function Home() {
     } catch (error) {
       console.log(error);
       if (axios.isAxiosError(error)) {
-        Alert.alert(error.response?.data.message);
+        openModal({
+          message: error.response?.data.message,
+          type: 'error',
+        });
       }
       setIsRefreshing(false);
     }

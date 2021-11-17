@@ -4,7 +4,6 @@ import {
   StatusBar,
   TouchableWithoutFeedback,
   Keyboard,
-  Alert,
 } from 'react-native';
 import { useTheme } from 'styled-components';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
@@ -18,6 +17,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { DrawerParamList } from '../../routes/drawer.routes';
 import { api } from '../../services/api';
 import { useAuth } from '../../hooks/useAuth';
+import { useModal } from '../../hooks/useModal';
 import { Input } from '../../components/Form/Input';
 import { Button } from '../../components/Form/Button';
 import { Spinner } from '../../components/Spinner';
@@ -70,6 +70,7 @@ export function Profile() {
   const navigation = useNavigation<ProfileScreenNavigationProp>();
   const theme = useTheme();
   const { user, updateUser } = useAuth();
+  const { openModal } = useModal();
 
   const handleEditProfile: SubmitHandler<EditProfileFormData> = async data => {
     try {
@@ -79,11 +80,17 @@ export function Profile() {
 
       updateUser(response.data);
 
-      Alert.alert('Usuário atualizado com sucesso.');
+      openModal({
+        message: 'Usuário atualizado com sucesso.',
+        type: 'success',
+      });
     } catch (error) {
       console.log(error);
       if (axios.isAxiosError(error)) {
-        Alert.alert(error.response?.data.message);
+        openModal({
+          message: error.response?.data.message,
+          type: 'error',
+        });
       }
     }
   }
@@ -114,16 +121,20 @@ export function Profile() {
 
         const response = await api.get('users/me');
 
-        console.log(response.data);
-
         updateUser(response.data);
         setIsLoading(false);
 
-        Alert.alert('Avatar atualizado com sucesso.');
+        openModal({
+          message: 'Avatar atualizado com sucesso.',
+          type: 'success',
+        });
       } catch (error) {
         console.log(error);
         if (axios.isAxiosError(error)) {
-          Alert.alert(error.response?.data.message);
+          openModal({
+            message: error.response?.data.message,
+            type: 'error',
+          });
         }
       }
       setIsLoading(false);
@@ -135,7 +146,10 @@ export function Profile() {
       if (Platform.OS !== 'web') {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
-          Alert.alert('Desculpa, precisamos de permissões de camera para atualizar seu avatar.');
+          openModal({
+            message: 'Desculpa, precisamos de permissões de camera para atualizar seu avatar.',
+            type: 'info',
+          });
         }
       }
     })();
