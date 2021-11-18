@@ -128,7 +128,7 @@ export function ModuleQuizz() {
       setIsSubmitting(false);
 
       openModal({
-        message: `Quizz respondido com sucesso! Quantidade de acertos: ${quizzScore} de ${questions.length}`,
+        message: `Quiz respondido com sucesso! Quantidade de acertos: ${quizzScore} de ${questions.length}`,
         type: 'success',
       });
 
@@ -186,7 +186,7 @@ export function ModuleQuizz() {
       <TitleContainer>
         <BackButton onPress={() => navigation.goBack()} />
 
-        <Title>Quizz</Title>
+        <Title>Quiz</Title>
       </TitleContainer>
 
       <Content>

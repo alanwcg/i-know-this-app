@@ -82,7 +82,7 @@ export function ModuleLinks() {
         </Scroll>
 
         <ButtonWrapper>
-          <Button title="Quizz" onPress={handleModuleQuizz} />
+          <Button title="Quiz" onPress={handleModuleQuizz} />
         </ButtonWrapper>
       </Content>
     </Container>

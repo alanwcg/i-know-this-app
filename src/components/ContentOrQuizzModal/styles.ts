@@ -82,7 +82,7 @@ export const UserProgressionBar = styled.View<UserProgressionBarProps>`
 export const Progression = styled.Text`
   font-size: ${RFValue(24)}px;
   font-family: ${({ theme }) => theme.fonts.bold};
-  color: ${({ theme }) => theme.colors.purple};
+  color: ${({ theme }) => theme.colors.white};
 `;
 
 export const ButtonContainer = styled.View`

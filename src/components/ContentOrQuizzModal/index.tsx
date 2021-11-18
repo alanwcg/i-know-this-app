@@ -53,9 +53,9 @@ export function ContentOrQuizzModal({
 
         {module.userModules[0] ? (
           <ProgressionBar>
-            <UserProgressionBar width={module.userModules[0].progression * 20} />
+            <UserProgressionBar width={module.userModules[0].progression * 10} />
 
-            <Progression>{`${module.userModules[0].progression * 20}%`}</Progression>
+            <Progression>{`${module.userModules[0].progression * 10}%`}</Progression>
 
           </ProgressionBar>
         ) : (
@@ -88,7 +88,7 @@ export function ContentOrQuizzModal({
             })}
             onPress={() => handleChoice('quizz')}
           >
-            <ButtonText>Quizz</ButtonText>
+            <ButtonText>Quiz</ButtonText>
           </Button>
         </ButtonContainer>
       </Content>

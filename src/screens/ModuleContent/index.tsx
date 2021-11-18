@@ -94,7 +94,7 @@ export function ModuleContent() {
           </Button>
 
           <Button onPress={handleModuleQuizz}>
-            <ButtonText>Quizz</ButtonText>
+            <ButtonText>Quiz</ButtonText>
           </Button>
         </ButtonContainer>
       </Content>

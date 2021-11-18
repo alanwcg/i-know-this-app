@@ -25,7 +25,7 @@ export const Content = styled(BorderlessButton).attrs<BorderlessButtonProps>(({ 
 
   ${({ itemIndex }) => itemIndex > 0 &&
     css`
-      margin-top: 4px;
+      margin-top: 8px;
     `};
 `;
 

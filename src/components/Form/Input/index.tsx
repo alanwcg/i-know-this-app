@@ -34,7 +34,7 @@ export function Input({
 
   return (
     <>
-      <Container isFocused={isFocused} hasError={!!error}>
+      <Container testID="input-wrapper" isFocused={isFocused} hasError={!!error}>
         {Icon && <Icon />}
 
         <Controller
