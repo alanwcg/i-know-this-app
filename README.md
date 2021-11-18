@@ -5,7 +5,7 @@
 ### Informações Prévias
 O presente projeto é fruto dos esforços de [Alan](https://github.com/alanwcg), [Artur](https://github.com/arturferreira-dev) e [Carlos](https://github.com/carlossgabriel).
 
-O presente APP foi consome a API [api](https://github.com/alanwcg/i-know-this-api) desenvolvida em express.js como materialização final do trabalho de conclusão do curso de Ciência da Computação, realizado na Unifavip.
+O presente APP foi consome a [API](https://github.com/alanwcg/i-know-this-api) desenvolvida em express.js como materialização final do trabalho de conclusão do curso de Ciência da Computação, realizado na Unifavip.
 
 A orientação foi realizada pelo professor Wolney.
 
