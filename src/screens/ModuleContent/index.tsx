@@ -110,14 +110,17 @@ const styles = StyleSheet.create({
   },
   heading1: {
     color: theme.colors.white,
+    fontFamily: theme.fonts.bold,
   },
   fence: {
     backgroundColor: theme.colors.background,
     color: theme.colors.orange,
+    fontFamily: theme.fonts.medium,
     borderColor: theme.colors.orange,
   },
   code_inline: {
     backgroundColor: theme.colors.background,
     color: theme.colors.orange,
+    fontFamily: theme.fonts.medium,
   }
 });

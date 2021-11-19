@@ -97,8 +97,10 @@ const styles = StyleSheet.create({
   },
   heading1: {
     color: theme.colors.white,
+    fontFamily: theme.fonts.bold,
   },
   link: {
     color: theme.colors.orange,
+    fontFamily: theme.fonts.medium,
   },
 });

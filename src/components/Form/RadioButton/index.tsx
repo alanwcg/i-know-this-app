@@ -32,6 +32,7 @@ export function RadioButton({
             ? <Icon name="radiobox-marked" selected={selected.id === item.id} />
             : <Icon name="radiobox-blank" selected={selected.id === item.id} />
           }
+          
           <Text>{item.text}</Text>
         </Content>
       ))}
