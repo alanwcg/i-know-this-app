@@ -109,13 +109,6 @@ export function ModuleQuizz() {
     try {
       setIsSubmitting(true);
 
-      console.log({
-        user_id: user?.id,
-        level_id: module.level_id,
-        technology_id: module.technology_id,
-        progression: quizzScore,
-      });
-
       const response = await api.post('/users-modules', {
         user_id: user?.id,
         level_id: module.level_id,
@@ -127,12 +120,11 @@ export function ModuleQuizz() {
       setChosenOptions(Array(response.data.length).fill({} as Option));
       setIsSubmitting(false);
 
-      openModal({
-        message: `Quiz respondido com sucesso! Quantidade de acertos: ${quizzScore} de ${questions.length}`,
-        type: 'success',
+      navigation.push('QuizzResult', {
+        questions,
+        chosenOptions,
+        quizzScore,
       });
-
-      navigation.push('Home');
     } catch (error) {
       console.log(error);
       if (axios.isAxiosError(error)) {
@@ -222,7 +214,7 @@ export function ModuleQuizz() {
           <ButtonWrapper>
             {currentQuestion === questions.length - 1 ? (
               <Button
-                title="Finalizar"
+                title="Resultado"
                 enabled={!!selectedOption.id && !isSubmitting}
                 loading={isSubmitting}
                 onPress={handleFinishQuizz}
@@ -236,19 +228,7 @@ export function ModuleQuizz() {
             )}
           </ButtonWrapper>
         </ButtonContainer>
-
       </Content>
     </Container>
   );
 }
-
-//TODO: Estilizar o text em markdown que vem dentro de module.content
-const styles = StyleSheet.create({
-  body: {
-    color: theme.colors.white,
-    fontSize: RFValue(16),
-  },
-  heading1: {
-    color: theme.colors.white,
-  }
-});

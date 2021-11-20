@@ -45,11 +45,22 @@ export const Icon = styled(MaterialCommunityIcons)<IconProps>`
     `};
 `;
 
-export const Text = styled.Text`
+type TextProps = {
+  isCorrectAnswer?: boolean;
+}
+
+export const Text = styled.Text<TextProps>`
   flex: 1;
-  font-size: ${RFValue(14)}px;
-  font-family: ${({ theme }) => theme.fonts.medium};
-  color: ${({ theme }) => theme.colors.white};
   text-align: justify;
   margin-left: 16px;
+  font-size: ${RFValue(14)}px;
+  font-family: ${({ theme }) => theme.fonts.medium};
+  
+  ${({ isCorrectAnswer }) => isCorrectAnswer
+    ? css`
+      color: ${({ theme }) => theme.colors.green};
+    `
+    : css`
+      color: ${({ theme }) => theme.colors.white};
+    `};
 `;

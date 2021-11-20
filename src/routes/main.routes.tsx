@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AxiosError } from 'axios';
 
 import { Module } from '../types/Module';
+import { Option, Question } from '../types/Question';
 import { api } from '../services/api';
 import { useAuth } from '../hooks/useAuth';
 import { Home } from '../screens/Home';
@@ -11,6 +12,7 @@ import { Technology } from '../screens/Technology';
 import { ModuleContent } from '../screens/ModuleContent';
 import { ModuleLinks } from '../screens/ModuleLinks';
 import { ModuleQuizz } from '../screens/ModuleQuizz';
+import { QuizzResult } from '../screens/QuizzResult';
 
 export type MainStackParamList = {
   Home: undefined;
@@ -18,6 +20,11 @@ export type MainStackParamList = {
   ModuleContent: { module: Module };
   ModuleLinks: { module: Module };
   ModuleQuizz: { module: Module };
+  QuizzResult: {
+    questions: Question[],
+    chosenOptions: Option[],
+    quizzScore: number;
+  };
 }
 
 const { Navigator, Screen } = createNativeStackNavigator<MainStackParamList>();
@@ -100,6 +107,7 @@ export function MainRoutes() {
       <Screen name="ModuleContent" component={ModuleContent} />
       <Screen name="ModuleLinks" component={ModuleLinks} />
       <Screen name="ModuleQuizz" component={ModuleQuizz} />
+      <Screen name="QuizzResult" component={QuizzResult} />
     </ Navigator>
       );
 }

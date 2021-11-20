@@ -12,13 +12,15 @@ import {
 type RadioButtonProps = {
   items: Option[];
   selected: Option;
-  setSelected: (value: Option) => void;
+  setSelected?: (value: Option) => void;
+  showResult?: boolean;
 }
 
 export function RadioButton({
   items,
   selected,
   setSelected,
+  showResult = false,
 }: RadioButtonProps) {
   return (
     <Container>
@@ -26,14 +28,19 @@ export function RadioButton({
         <Content
           key={item.id}
           itemIndex={index}
-          onPress={() => setSelected(item)}
+          enabled={!showResult}
+          onPress={setSelected ? () => setSelected(item) : undefined}
         >
           {selected.id === item.id
             ? <Icon name="radiobox-marked" selected={selected.id === item.id} />
             : <Icon name="radiobox-blank" selected={selected.id === item.id} />
           }
-          
-          <Text>{item.text}</Text>
+
+          {showResult ? (
+            <Text isCorrectAnswer={item.correct_answer}>{item.text}</Text>
+          ) : (
+            <Text>{item.text}</Text>
+          )}
         </Content>
       ))}
     </Container>
